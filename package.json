@@ -1,0 +1,25 @@
+{
+  "name": "huificator",
+  "version": "1.0.0",
+  "description": "Хуификатор для вашего сайта",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Тесты-хуесты!\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sergeiterehov/huificator.git"
+  },
+  "keywords": [
+    "хуификатор",
+    "huificator",
+    "huifikator",
+    "huefikator"
+  ],
+  "author": "Terekhov Sergey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sergeiterehov/huificator/issues"
+  },
+  "homepage": "https://github.com/sergeiterehov/huificator#readme"
+}
