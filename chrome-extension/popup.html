@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="color-scheme" content="light dark">
+    <title>Журбанизатор</title>
+    <script src="popup.js" defer></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        :root {
+            color-scheme: light dark;
+            accent-color: var(--btn-1);
+
+            /* Фирменные цвета (те же, что в исходном градиенте) */
+            --brand-1: #00a486;
+            --brand-2: #b2b41a;
+            --brand-3: #31c400;
+            --brand-4: #007bff;
+
+            /* Кнопка: затемнено ради контраста 5:1 с белым текстом */
+            --btn-1: #007a63;
+            --btn-2: #2f7d00;
+            --btn-text: #ffffff;
+
+            /* Светлая тема */
+            --bg: #f2f4f7;
+            --surface: #ffffff;
+            --text: #14161a;
+            --muted: #5b6472;
+            --border: #e4e7ec;
+            --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 10px 28px rgb(16 24 40 / 10%);
+            --focus: rgb(0 164 134 / 45%);
+
+            /* Состояния */
+            --on: #047857;
+            --on-bg: rgb(4 120 87 / 10%);
+            --off: #5b6472;
+            --off-bg: rgb(91 100 114 / 10%);
+            --warn: #b45309;
+            --warn-bg: rgb(180 83 9 / 10%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f1115;
+                --surface: #191c22;
+                --text: #eef0f4;
+                --muted: #98a2b3;
+                --border: #2a2f39;
+                --shadow: 0 1px 2px rgb(0 0 0 / 45%), 0 10px 28px rgb(0 0 0 / 40%);
+                --focus: rgb(49 196 0 / 40%);
+
+                /* Состояния */
+                --on: #34d399;
+                --on-bg: rgb(52 211 153 / 14%);
+                --off: #98a2b3;
+                --off-bg: rgb(152 162 179 / 12%);
+                --warn: #fbbf24;
+                --warn-bg: rgb(251 191 36 / 14%);
+            }
+        }
+
+        body {
+            width: 320px;
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.45;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* Фирменная полоса */
+        body::before {
+            content: "";
+            display: block;
+            block-size: 4px;
+            background: linear-gradient(90deg, var(--brand-1), var(--brand-2), var(--brand-3), var(--brand-4));
+        }
+
+        .card {
+            display: grid;
+            gap: 12px;
+            margin: 12px;
+            padding: 16px 16px 18px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+        }
+
+        .head {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 650;
+            letter-spacing: -0.02em;
+            text-wrap: balance;
+        }
+
+        .chip {
+            flex: none;
+            padding: 2px 8px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: rgb(127 127 127 / 10%);
+            color: var(--muted);
+            font-size: 11px;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.02em;
+        }
+
+        .tagline {
+            margin: -4px 0 2px;
+            color: var(--muted);
+            font-size: 13px;
+            text-wrap: pretty;
+            /* Резерв под 2 строки: подзаголовок меняется, попап не «прыгает» */
+            min-block-size: 2.9em;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px 16px;
+            border: 0;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--btn-1), var(--btn-2));
+            color: var(--btn-text);
+            font: inherit;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            box-shadow: inset 0 1px 0 rgb(255 255 255 / 18%), 0 2px 6px rgb(16 24 40 / 15%);
+            transition: filter 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+        }
+
+        .btn:hover:not(:disabled) { filter: brightness(1.1); }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(1px);
+            box-shadow: inset 0 1px 2px rgb(0 0 0 / 25%);
+        }
+
+        .btn:focus-visible {
+            outline: 3px solid var(--focus);
+            outline-offset: 2px;
+        }
+
+        .btn:disabled {
+            cursor: default;
+            filter: saturate(0.6);
+            opacity: 0.6;
+        }
+
+        /* Индикатор состояния: data-state задаёт попап */
+        .status {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin: 0;
+            padding: 7px 10px;
+            border-radius: 9px;
+            font-size: 12.5px;
+            text-wrap: pretty;
+            transition: color 120ms ease, background-color 120ms ease;
+        }
+
+        .status::before {
+            content: "";
+            flex: none;
+            inline-size: 7px;
+            block-size: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .status[data-state="on"] { color: var(--on); background: var(--on-bg); }
+        .status[data-state="off"] { color: var(--off); background: var(--off-bg); }
+        .status[data-state="unknown"],
+        .status[data-state="unavailable"] { color: var(--warn); background: var(--warn-bg); }
+
+        .status[data-state="unknown"]::before {
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            50% { opacity: 0.3; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; }
+            .btn:active:not(:disabled) { transform: none; }
+            .status[data-state="unknown"]::before { animation: none; }
+        }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <div class="head">
+            <h1>Журбанизатор</h1>
+            <span class="chip" id="version"></span>
+        </div>
+        <p class="tagline" id="tagline">Посмотри на мир под другим углом!</p>
+        <p class="status" id="status" data-state="unknown" role="status">
+            <span id="status-text">Проверяю…</span>
+        </p>
+        <button class="btn" id="go" type="button" disabled>Делать хорошо!</button>
+    </main>
+</body>
+</html>
