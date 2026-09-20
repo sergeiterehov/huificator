@@ -28,7 +28,12 @@ const setStatus = (state: ViewState, text: string): void => {
 };
 
 // Версия берётся из манифеста, чтобы не расходилась с ним
-version.textContent = `v${chrome.runtime.getManifest().version}`;
+const versionLabel = `v${chrome.runtime.getManifest().version}`;
+
+version.textContent = versionLabel;
+// Чип — ссылка на репозиторий, но подписана только версией:
+// для скринридеров поясняем, куда она ведёт
+version.setAttribute("aria-label", `Репозиторий huificator на GitHub, версия ${versionLabel}`);
 
 // Случайный подзаголовок при каждом открытии попапа
 tagline.textContent = TAGLINES[Math.floor(Math.random() * TAGLINES.length)] ?? FALLBACK_TAGLINE;

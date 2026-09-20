@@ -107,6 +107,7 @@
             text-wrap: balance;
         }
 
+        /* Версия — ссылка на репозиторий */
         .chip {
             flex: none;
             padding: 2px 8px;
@@ -117,6 +118,19 @@
             font-size: 11px;
             font-variant-numeric: tabular-nums;
             letter-spacing: 0.02em;
+            text-decoration: none;
+            transition: color 120ms ease, background-color 120ms ease;
+        }
+
+        .chip:hover {
+            color: var(--text);
+            border-color: currentColor;
+            background: rgb(127 127 127 / 18%);
+        }
+
+        .chip:focus-visible {
+            outline: 3px solid var(--focus);
+            outline-offset: 2px;
         }
 
         .tagline {
@@ -207,7 +221,7 @@
     <main class="card">
         <div class="head">
             <h1>Журбанизатор</h1>
-            <span class="chip" id="version"></span>
+            <a class="chip" id="version" href="https://github.com/sergeiterehov/huificator" target="_blank" rel="noopener noreferrer" title="Открыть репозиторий на GitHub"></a>
         </div>
         <p class="tagline" id="tagline">Посмотри на мир под другим углом!</p>
         <p class="status" id="status" data-state="unknown" role="status">
