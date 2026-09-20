@@ -1,0 +1,22 @@
+{
+  "name": "@huificator/extension",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Расширение для Chrome",
+  "type": "module",
+  "scripts": {
+    "build": "npm run build:popup && npm run build:content",
+    "build:popup": "vite build",
+    "build:content": "vite build --config vite.config.content.ts",
+    "dev:popup": "vite build --watch",
+    "dev:content": "vite build --watch --config vite.config.content.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "huificator": "*"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.3.0",
+    "vite": "^8.3.0"
+  }
+}

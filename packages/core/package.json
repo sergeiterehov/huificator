@@ -1,0 +1,38 @@
+{
+  "name": "huificator",
+  "version": "2.0.0",
+  "description": "Хуификатор для вашего сайта",
+  "license": "ISC",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sergeiterehov/huificator.git"
+  },
+  "keywords": [
+    "хуификатор",
+    "huificator",
+    "huifikator",
+    "huefikator"
+  ],
+  "author": "Terekhov Sergey",
+  "bugs": {
+    "url": "https://github.com/sergeiterehov/huificator/issues"
+  },
+  "homepage": "https://github.com/sergeiterehov/huificator#readme"
+}

@@ -1,10 +1,22 @@
 {
-  "name": "huificator",
-  "version": "1.0.0",
-  "description": "Хуификатор для вашего сайта",
-  "main": "index.js",
+  "name": "huificator-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Хуификатор: ядро + расширение для Chrome",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "test": "echo \"Тесты-хуесты!\" && exit 1"
+    "pretest": "npm run build:core",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "npm run typecheck:core && npm run typecheck:extension",
+    "typecheck:core": "tsc --noEmit -p packages/core/tsconfig.json",
+    "typecheck:extension": "tsc --noEmit -p packages/extension/tsconfig.json",
+    "build": "npm run build:core && npm run build:extension",
+    "build:core": "npm run build --workspace huificator",
+    "build:extension": "npm run build --workspace @huificator/extension"
   },
   "repository": {
     "type": "git",
@@ -21,5 +33,10 @@
   "bugs": {
     "url": "https://github.com/sergeiterehov/huificator/issues"
   },
-  "homepage": "https://github.com/sergeiterehov/huificator#readme"
+  "homepage": "https://github.com/sergeiterehov/huificator#readme",
+  "devDependencies": {
+    "jsdom": "^29.1.1",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  }
 }
