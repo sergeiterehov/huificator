@@ -16,7 +16,8 @@
     "typecheck:extension": "tsc --noEmit -p packages/extension/tsconfig.json",
     "build": "npm run build:core && npm run build:extension",
     "build:core": "npm run build --workspace huificator",
-    "build:extension": "npm run build --workspace @huificator/extension"
+    "build:extension": "npm run build --workspace @huificator/extension",
+    "pack:zip": "npm run build && mkdir -p release && cd packages/extension/dist && zip -r -X -D ../../../release/zhurbanizator.zip . -x '*.DS_Store'"
   },
   "repository": {
     "type": "git",
